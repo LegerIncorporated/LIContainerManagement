@@ -67,10 +67,10 @@ public class ContainerViewController: UIViewController {
     
     private func swapFromViewController(_ fromViewController: UIViewController?, toViewController: UIViewController, duration: TimeInterval = 1.0, options: UIView.AnimationOptions = [], completion: ((Bool) -> Void)? = nil ) -> Void {
         
-        let from = (fromViewController?.view.subviews[0] as? UILabel)?.text?.replacingOccurrences(of: "\n", with: " ") ?? "<nil>"
-        let to = (toViewController.view.subviews[0] as? UILabel)?.text?.replacingOccurrences(of: "\n", with: " ") ?? "<nil>"
-
-        print("\(Date().timeIntervalSinceReferenceDate) Swap command: \(from) -> \(to)")
+//        let from = (fromViewController?.view.subviews[0] as? UILabel)?.text?.replacingOccurrences(of: "\n", with: " ") ?? "<nil>"
+//        let to = (toViewController.view.subviews[0] as? UILabel)?.text?.replacingOccurrences(of: "\n", with: " ") ?? "<nil>"
+//
+//        print("\(Date().timeIntervalSinceReferenceDate) Swap command: \(from) -> \(to)")
         
         delegate?.containerView(self, willSwapFromViewController: fromViewController, toViewController: toViewController)
         
@@ -82,9 +82,9 @@ public class ContainerViewController: UIViewController {
             transition(from: fromViewController, to: toViewController, duration: duration, options: options, animations: {
                 // Nothing to do but read that the animation block was necessary
                 // See Bullet 3. https://stackoverflow.com/a/48369709
-                print("\(Date().timeIntervalSinceReferenceDate) Animation block: \(from) -> \(to)")
+//                print("\(Date().timeIntervalSinceReferenceDate) Animation block: \(from) -> \(to)")
             }) { (finished) in
-                print("\(Date().timeIntervalSinceReferenceDate) Completion (\(finished)): \(from) -> \(to)")
+//                print("\(Date().timeIntervalSinceReferenceDate) Completion (\(finished)): \(from) -> \(to)")
                 
                 fromViewController.removeFromParent()
                 fromViewController.view.removeFromSuperview()
