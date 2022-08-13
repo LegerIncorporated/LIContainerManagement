@@ -68,7 +68,19 @@ public class ContainerViewController: UIViewController {
         }
     }
     
-    private func swapFromViewController(_ fromViewController: UIViewController?, toViewController: UIViewController, duration: TimeInterval = 1.0, options: UIView.AnimationOptions = [], completion: ((Bool) -> Void)? = nil ) -> Void {
+    public func swap(toViewController destination: UIViewController, duration: TimeInterval? = nil, options: UIView.AnimationOptions? = nil) {
+        
+        let containerTransition = ContainerTransition(
+            identifier: "SWAP-MANUAL",
+            destination: destination,
+            duration: duration ?? defaultTransitionDuration,
+            options: options ?? defaultAnimationOptions
+        )
+        
+        self.performContainerTransition(containerTransition)
+    }
+    
+    private func swapFromViewController(_ fromViewController: UIViewController?, toViewController: UIViewController, duration: TimeInterval? = nil, options: UIView.AnimationOptions? = nil, completion: ((Bool) -> Void)? = nil ) -> Void {
         
 //        let from = (fromViewController?.view.subviews[0] as? UILabel)?.text?.replacingOccurrences(of: "\n", with: " ") ?? "<nil>"
 //        let to = (toViewController.view.subviews[0] as? UILabel)?.text?.replacingOccurrences(of: "\n", with: " ") ?? "<nil>"
