@@ -13,6 +13,9 @@ public class ContainerViewController: UIViewController {
     
     var defaultSegueIdentifier: String?
     
+    var defaultTransitionDuration = 0.0
+    var defaultAnimationOptions: UIView.AnimationOptions = []
+    
     // MARK: - View Lifecycle
     
     public override func viewDidLoad() {
@@ -79,7 +82,12 @@ public class ContainerViewController: UIViewController {
             fromViewController.willMove(toParent: nil)
             addChild(toViewController)
 
-            transition(from: fromViewController, to: toViewController, duration: duration, options: options, animations: {
+            transition(
+                from: fromViewController,
+                to: toViewController,
+                duration: duration ?? defaultTransitionDuration,
+                options: options ?? defaultAnimationOptions,
+                animations: {
                 // Nothing to do but read that the animation block was necessary
                 // See Bullet 3. https://stackoverflow.com/a/48369709
 //                print("\(Date().timeIntervalSinceReferenceDate) Animation block: \(from) -> \(to)")
@@ -213,16 +221,9 @@ extension UIViewController {
 
 public struct ContainerTransition: Equatable {
     
-    public init(identifier: String, destination: UIViewController? = nil, duration: TimeInterval = 1.0, options: UIView.AnimationOptions = []) {
-        self.identifier = identifier
-        self.destination = destination
-        self.duration = duration
-        self.options = options
-    }
-    
     public var identifier: String
     public var destination: UIViewController? = nil
-    public var duration: TimeInterval = 1.0
+    public var duration: TimeInterval = 0.0
     public var options: UIView.AnimationOptions = []
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
