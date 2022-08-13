@@ -3,12 +3,11 @@
 //
 //  Created by Justin Léger on 2/4/18.
 //
-
 // Originally inspired from: https://github.com/mluton/EmbeddedSwapping
 
 import UIKit
 
-class ContainerViewController: UIViewController {
+public class ContainerViewController: UIViewController {
      
     weak public var delegate: ContainerViewControllerDelegate?
     
@@ -16,7 +15,7 @@ class ContainerViewController: UIViewController {
     
     // MARK: - View Lifecycle
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         if let defaultSegueIdentifier = defaultSegueIdentifier {
@@ -24,7 +23,7 @@ class ContainerViewController: UIViewController {
         }
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         delegate?.containerView(self, willSegue: segue)
         
         var containerTransition: ContainerTransition
@@ -39,7 +38,7 @@ class ContainerViewController: UIViewController {
         performContainerTransition(containerTransition)
     }
     
-    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+    public override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
     
         guard let shouldPerformSegue = delegate?.containerView(self, shouldPerformSegueWithIdentifier: identifier, sender: sender) else {
             return super.shouldPerformSegue(withIdentifier: identifier, sender: sender)
@@ -48,11 +47,11 @@ class ContainerViewController: UIViewController {
         return shouldPerformSegue
     }
     
-    func performSegue(withContainerTransition containerTransition: ContainerTransition) {
+    public func performSegue(withContainerTransition containerTransition: ContainerTransition) {
         self.performSegue(withIdentifier: containerTransition.identifier, sender: containerTransition)
     }
     
-    override func performSegue(withIdentifier identifier: String, sender: Any?) {
+    public override func performSegue(withIdentifier identifier: String, sender: Any?) {
         
         let canPerformSegue = self.canPerformSegue(withIdentifier: identifier)
         let shouldPerformSegue = self.shouldPerformSegue(withIdentifier: identifier, sender: sender)
@@ -111,7 +110,7 @@ class ContainerViewController: UIViewController {
     private var activeContainerTransition: ContainerTransition?
     private var containerTransitionQueue: [ContainerTransition] = []
     
-    func performContainerTransition(_ transition: ContainerTransition) {
+    public func performContainerTransition(_ transition: ContainerTransition) {
         containerTransitionQueue.append(transition)
         
         // There was already a transition in the queue.
@@ -123,7 +122,7 @@ class ContainerViewController: UIViewController {
         performNextContainerTransition()
     }
     
-    func performNextContainerTransition() {
+    public func performNextContainerTransition() {
         
         if let nextContainerTransition = containerTransitionQueue.first, nextContainerTransition != self.activeContainerTransition, let destination = nextContainerTransition.destination {
             self.activeContainerTransition = nextContainerTransition
@@ -146,7 +145,7 @@ class ContainerViewController: UIViewController {
     
 }
 
-protocol ContainerViewControllerDelegate: AnyObject {
+public protocol ContainerViewControllerDelegate: AnyObject {
     
     func containerView(_ containerView: ContainerViewController, willSegue segue: UIStoryboardSegue) -> Swift.Void // Optional
     func containerView(_ containerView: ContainerViewController, shouldPerformSegueWithIdentifier identifier: String, sender: Any?) -> Bool // Optional
@@ -156,7 +155,7 @@ protocol ContainerViewControllerDelegate: AnyObject {
     
 }
 
-extension ContainerViewControllerDelegate {
+public extension ContainerViewControllerDelegate {
     
     // Make Optional
     // Stub functions so this can be optional in the class designated as delegates
@@ -212,13 +211,21 @@ extension UIViewController {
     }
 }
 
-struct ContainerTransition: Equatable {
-    var identifier: String
-    var destination: UIViewController? = nil
-    var duration: TimeInterval = 1.0
-    var options: UIView.AnimationOptions = []
+public struct ContainerTransition: Equatable {
     
-    static func == (lhs: Self, rhs: Self) -> Bool {
+    public init(identifier: String, destination: UIViewController? = nil, duration: TimeInterval = 1.0, options: UIView.AnimationOptions = []) {
+        self.identifier = identifier
+        self.destination = destination
+        self.duration = duration
+        self.options = options
+    }
+    
+    public var identifier: String
+    public var destination: UIViewController? = nil
+    public var duration: TimeInterval = 1.0
+    public var options: UIView.AnimationOptions = []
+    
+    public static func == (lhs: Self, rhs: Self) -> Bool {
         return lhs.identifier == rhs.identifier && lhs.duration == rhs.duration && lhs.options == rhs.options
     }
 }
