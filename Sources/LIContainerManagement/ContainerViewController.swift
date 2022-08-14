@@ -13,6 +13,9 @@ public class ContainerViewController: UIViewController {
     
     var defaultSegueIdentifier: String?
     
+//    var defaultTransitionDuration = 0.25
+//    var defaultAnimationOptions: UIView.AnimationOptions = [.transitionCrossDissolve]
+    
     var defaultTransitionDuration = 0.0
     var defaultAnimationOptions: UIView.AnimationOptions = []
     
@@ -32,10 +35,19 @@ public class ContainerViewController: UIViewController {
         var containerTransition: ContainerTransition
         
         if let senderTransition = sender as? ContainerTransition {
-            containerTransition = ContainerTransition(identifier: senderTransition.identifier, destination: segue.destination, duration: senderTransition.duration, options: senderTransition.options)
-            containerTransition.destination = segue.destination
+            containerTransition = ContainerTransition(
+                identifier: senderTransition.identifier,
+                destination: segue.destination,
+                duration: senderTransition.duration,
+                options: senderTransition.options
+            )
         } else {
-            containerTransition = ContainerTransition(identifier: segue.identifier ?? "UNKOWN-IDENTIFIER", destination: segue.destination, duration: 1.0, options: [.transitionCrossDissolve])
+            containerTransition = ContainerTransition(
+                identifier: segue.identifier ?? "UNKOWN-IDENTIFIER",
+                destination: segue.destination,
+                duration: defaultTransitionDuration,
+                options: defaultAnimationOptions
+            )
         }
         
         performContainerTransition(containerTransition)
@@ -233,12 +245,15 @@ extension UIViewController {
 
 public struct ContainerTransition: Equatable {
     
-    public var identifier: String
+    public let uuid = UUID()
+    
+    public var identifier: String = "UNKOWN-IDENTIFIER"
     public var destination: UIViewController? = nil
     public var duration: TimeInterval = 0.0
     public var options: UIView.AnimationOptions = []
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
-        return lhs.identifier == rhs.identifier && lhs.duration == rhs.duration && lhs.options == rhs.options
+        // return lhs.uuid == rhs.uuid
+        return lhs.identifier == rhs.identifier && lhs.destination?.hash == rhs.destination?.hash
     }
 }
