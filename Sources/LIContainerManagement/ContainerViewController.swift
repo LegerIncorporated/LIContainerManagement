@@ -43,7 +43,7 @@ public class ContainerViewController: UIViewController {
             )
         } else {
             containerTransition = ContainerTransition(
-                identifier: segue.identifier ?? "UNKOWN-IDENTIFIER",
+                identifier: segue.identifier ?? "UNKNOWN-IDENTIFIER",
                 destination: segue.destination,
                 duration: defaultTransitionDuration,
                 options: defaultAnimationOptions
@@ -247,7 +247,7 @@ public struct ContainerTransition: Equatable {
     
     public let uuid = UUID()
     
-    public var identifier: String = "UNKOWN-IDENTIFIER"
+    public var identifier: String = "UNKNOWN-IDENTIFIER"
     public var destination: UIViewController? = nil
     public var duration: TimeInterval = 0.0
     public var options: UIView.AnimationOptions = []
