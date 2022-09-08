@@ -7,21 +7,21 @@
 
 import UIKit
 
-public class ContainerViewController: UIViewController {
+open class ContainerViewController: UIViewController {
      
     weak public var delegate: ContainerViewControllerDelegate?
     
-    var defaultSegueIdentifier: String?
+    public var defaultSegueIdentifier: String?
     
 //    var defaultTransitionDuration = 0.25
 //    var defaultAnimationOptions: UIView.AnimationOptions = [.transitionCrossDissolve]
     
-    var defaultTransitionDuration = 0.0
-    var defaultAnimationOptions: UIView.AnimationOptions = []
+    public var defaultTransitionDuration = 0.0
+    public var defaultAnimationOptions: UIView.AnimationOptions = []
     
     // MARK: - View Lifecycle
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         
         if let defaultSegueIdentifier = defaultSegueIdentifier {
@@ -29,7 +29,7 @@ public class ContainerViewController: UIViewController {
         }
     }
     
-    public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         delegate?.containerView(self, willSegue: segue)
         
         var containerTransition: ContainerTransition
@@ -53,7 +53,7 @@ public class ContainerViewController: UIViewController {
         performContainerTransition(containerTransition)
     }
     
-    public override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+    open override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
     
         guard let shouldPerformSegue = delegate?.containerView(self, shouldPerformSegueWithIdentifier: identifier, sender: sender) else {
             return super.shouldPerformSegue(withIdentifier: identifier, sender: sender)
@@ -62,11 +62,11 @@ public class ContainerViewController: UIViewController {
         return shouldPerformSegue
     }
     
-    public func performSegue(withContainerTransition containerTransition: ContainerTransition) {
+    open func performSegue(withContainerTransition containerTransition: ContainerTransition) {
         self.performSegue(withIdentifier: containerTransition.identifier, sender: containerTransition)
     }
     
-    public override func performSegue(withIdentifier identifier: String, sender: Any?) {
+    open override func performSegue(withIdentifier identifier: String, sender: Any?) {
         
         let canPerformSegue = self.canPerformSegue(withIdentifier: identifier)
         let shouldPerformSegue = self.shouldPerformSegue(withIdentifier: identifier, sender: sender)
@@ -80,7 +80,7 @@ public class ContainerViewController: UIViewController {
         }
     }
     
-    public func swap(toViewController destination: UIViewController, duration: TimeInterval? = nil, options: UIView.AnimationOptions? = nil) {
+    open func swap(toViewController destination: UIViewController, duration: TimeInterval? = nil, options: UIView.AnimationOptions? = nil) {
         
         let containerTransition = ContainerTransition(
             identifier: "SWAP-MANUAL",
@@ -205,7 +205,7 @@ extension UIViewController {
      Checks whether controller can perform specific segue or not.
      - parameter identifier: Identifier of UIStoryboardSegue.
      */
-    func canPerformSegue(withIdentifier identifier: String) -> Bool {
+    public func canPerformSegue(withIdentifier identifier: String) -> Bool {
         //first fetch segue templates set in storyboard.
         guard let identifiers = value(forKey: "storyboardSegueTemplates") as? [NSObject] else {
             //if cannot fetch, return false
